@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MemeMakerViewController: UIViewController {
+class MemeEditorViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
