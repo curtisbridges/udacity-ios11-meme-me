@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class MemeEditorViewController: UIViewController {
 
     // fileprivate so extensions can still access
@@ -22,7 +23,7 @@ class MemeEditorViewController: UIViewController {
         NSStrokeWidthAttributeName: -1.0]
 
 
-    // MARK: Outlets
+    // MARK: - Outlets
 
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
@@ -40,12 +41,13 @@ class MemeEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        topTextField.text = initialTopText
-        bottomTextField.text = initialBottomText
-
+        // connect delegate chains
         navigationController?.delegate = self
         topTextField.delegate = self
         bottomTextField.delegate = self
+
+        topTextField.text = initialTopText
+        bottomTextField.text = initialBottomText
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +63,7 @@ class MemeEditorViewController: UIViewController {
         bottomTextField.textAlignment = .center
 
         subscribeToKeyboardNotifications()
+        handleInterfaceState()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -76,8 +79,8 @@ class MemeEditorViewController: UIViewController {
                 imageView.image != nil
     }
 
-    private func isMemeDone() -> Bool {
-        // every user editable element has been changed
+    private func isMemeReady() -> Bool {
+        // every user editable element has been changed (top and bottom text, image set)
         return topTextField.text != initialTopText &&
             bottomTextField.text != initialBottomText &&
             imageView.image != nil
@@ -86,9 +89,10 @@ class MemeEditorViewController: UIViewController {
     // fileprivate so extensions can still access
     fileprivate func handleInterfaceState() {
         cancelButtonItem.isEnabled = isUserEditing()
-        shareButtonItem.isEnabled = isMemeDone()
+        shareButtonItem.isEnabled = isMemeReady()
     }
 
+    // generates the image with top and bottom text overlaid
     private func generateMemedImage() -> UIImage {
         // Hide toolbar and navbar
         hideInterfaceChrome(true)
@@ -105,6 +109,7 @@ class MemeEditorViewController: UIViewController {
         return memedImage
     }
 
+    // hides UI elements so the screen can be captured
     private func hideInterfaceChrome(_ isHidden: Bool) {
         navigationController?.isNavigationBarHidden = isHidden
         bottomToolbar.isHidden = isHidden
@@ -157,7 +162,7 @@ class MemeEditorViewController: UIViewController {
 
 // MARK: - Extensions
 
-// MARK: Keyboard related extensions
+// MARK: Extension Keyboard
 
 extension MemeEditorViewController {
     func keyboardWillShow(_ notification:Notification) {

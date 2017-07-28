@@ -46,39 +46,47 @@
                                     <barButtonItem systemItem="flexibleSpace" id="Rda-h2-K6j"/>
                                 </items>
                             </toolbar>
-                            <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dg6-Z2-PRm" userLabel="TopTextField">
-                                <rect key="frame" x="4" y="114" width="406" height="21"/>
+                            <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dg6-Z2-PRm" userLabel="TopTextField">
+                                <rect key="frame" x="4" y="84" width="406" height="21"/>
                                 <attributedString key="attributedText">
                                     <fragment content="TOP">
                                         <attributes>
                                             <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
-                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="18" name="Impact"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="MRW-Da-ehk"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GfH-cT-EjB" userLabel="BottomTextField">
-                                <rect key="frame" x="4" y="665" width="406" height="21"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GfH-cT-EjB" userLabel="BottomTextField">
+                                <rect key="frame" x="4" y="651" width="406" height="21"/>
                                 <attributedString key="attributedText">
                                     <fragment content="BOTTOM">
                                         <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="18" name="Impact"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="uJr-Bb-npH"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="Doa-vY-Qka" secondAttribute="trailing" constant="-20" id="0Cw-Ck-PvQ"/>
+                            <constraint firstItem="ZX5-in-zJ4" firstAttribute="top" secondItem="GfH-cT-EjB" secondAttribute="bottom" constant="20" id="4BI-qN-Hlt"/>
                             <constraint firstItem="ZX5-in-zJ4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="KHM-w0-Kmz"/>
                             <constraint firstItem="GfH-cT-EjB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Mud-NL-3cE"/>
-                            <constraint firstItem="dg6-Z2-PRm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="Nlw-UC-DY1"/>
+                            <constraint firstItem="dg6-Z2-PRm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="Nlw-UC-DY1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dg6-Z2-PRm" secondAttribute="trailing" constant="-16" id="RrE-0n-BQ6"/>
                             <constraint firstAttribute="trailing" secondItem="ZX5-in-zJ4" secondAttribute="trailing" id="T3h-bb-kQB"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ZX5-in-zJ4" secondAttribute="bottom" id="Uv2-Wn-uXM"/>
@@ -88,7 +96,6 @@
                             <constraint firstItem="dg6-Z2-PRm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="jSz-6T-Blg"/>
                             <constraint firstItem="Doa-vY-Qka" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="reS-Sx-XvJ"/>
                             <constraint firstItem="ZX5-in-zJ4" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="vuM-H8-mNJ"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GfH-cT-EjB" secondAttribute="bottom" constant="50" id="zEo-th-2Zt"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="JeO-Oh-po7">
