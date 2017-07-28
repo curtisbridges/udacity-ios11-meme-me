@@ -137,6 +137,11 @@ class MemeEditorViewController: UIViewController {
         // capture the meme image from screen
         let memedImage = generateMemedImage()
 
+        // create our meme for saving
+        if let top = topTextField.text, let bottom = bottomTextField.text {
+            _ = Meme(topText: top, bottomText: bottom, originalImage: imageView.image, memedImage: memedImage)
+        }
+
         // share it using ActivityViewController
         let activityViewController = UIActivityViewController.init(activityItems:[memedImage], applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
