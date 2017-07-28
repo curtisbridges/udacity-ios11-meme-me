@@ -19,7 +19,7 @@ class MemeEditorViewController: UIViewController {
     private let memeTextAttributes:[String:Any] = [
         NSStrokeColorAttributeName: UIColor.black,
         NSForegroundColorAttributeName: UIColor.white,
-        NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+        NSFontAttributeName: UIFont(name: "impact", size: 40)!,
         NSStrokeWidthAttributeName: -1.0]
 
 
