@@ -96,6 +96,7 @@ class MemeEditorViewController: UIViewController {
 
     // reset the UI
     @IBAction func doCancel(_ sender: UIBarButtonItem) {
+        // TODO: need to dismiss keyboard here if it is visible
         topTextField.text = initialTopText
         bottomTextField.text = initialBottomText
         imageView.image = nil
@@ -108,6 +109,7 @@ class MemeEditorViewController: UIViewController {
 
 extension MemeEditorViewController {
     func keyboardWillShow(_ notification:Notification) {
+        // TODO: only do this when it is the bottom keyboard!
         view.frame.origin.y = 0 - getKeyboardHeight(notification)
     }
 
@@ -122,8 +124,10 @@ extension MemeEditorViewController {
     }
 
     func subscribeToKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+                                               name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),
+                                               name: .UIKeyboardWillHide, object: nil)
     }
 
     func unsubscribeFromKeyboardNotifications() {
@@ -141,6 +145,9 @@ extension MemeEditorViewController: UIImagePickerControllerDelegate {
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         imageView.contentMode = .scaleAspectFit
         imageView.image = chosenImage
+
+        // TODO: set the constraints on the text fields to the location of the image???
+
         dismiss(animated:true, completion: nil)
 
         handleInterfaceState()
