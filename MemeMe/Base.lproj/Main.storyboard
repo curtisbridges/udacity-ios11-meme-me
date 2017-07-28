@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Gpb-Ec-Vpd">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -46,24 +46,8 @@
                                     <barButtonItem systemItem="flexibleSpace" id="Rda-h2-K6j"/>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gi7-hS-Qaq" userLabel="TopToolbar">
-                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
-                                <items>
-                                    <barButtonItem enabled="NO" systemItem="action" id="TXw-0G-x6F">
-                                        <connections>
-                                            <action selector="showShareSheet:" destination="BYZ-38-t0r" id="S4c-OA-VvJ"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem systemItem="flexibleSpace" id="NdN-KP-pSJ"/>
-                                    <barButtonItem enabled="NO" systemItem="cancel" id="X7S-U9-zbV">
-                                        <connections>
-                                            <action selector="doCancel:" destination="BYZ-38-t0r" id="2La-gc-zni"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                             <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dg6-Z2-PRm" userLabel="TopTextField">
-                                <rect key="frame" x="4" y="70" width="406" height="21"/>
+                                <rect key="frame" x="4" y="114" width="406" height="21"/>
                                 <attributedString key="attributedText">
                                     <fragment content="TOP">
                                         <attributes>
@@ -92,7 +76,6 @@
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="Doa-vY-Qka" secondAttribute="trailing" constant="-20" id="0Cw-Ck-PvQ"/>
-                            <constraint firstItem="gi7-hS-Qaq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="H0g-ps-AFj"/>
                             <constraint firstItem="ZX5-in-zJ4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="KHM-w0-Kmz"/>
                             <constraint firstItem="GfH-cT-EjB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Mud-NL-3cE"/>
                             <constraint firstItem="dg6-Z2-PRm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="Nlw-UC-DY1"/>
@@ -101,27 +84,55 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ZX5-in-zJ4" secondAttribute="bottom" id="Uv2-Wn-uXM"/>
                             <constraint firstItem="Doa-vY-Qka" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="VL7-8R-n2g"/>
                             <constraint firstItem="Doa-vY-Qka" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="Yav-AO-Osd"/>
-                            <constraint firstItem="gi7-hS-Qaq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Z8c-Bf-UED"/>
-                            <constraint firstAttribute="trailing" secondItem="gi7-hS-Qaq" secondAttribute="trailing" id="ZKB-gP-lXK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GfH-cT-EjB" secondAttribute="trailing" constant="-16" id="Zd5-uD-Asn"/>
                             <constraint firstItem="dg6-Z2-PRm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="jSz-6T-Blg"/>
-                            <constraint firstItem="gi7-hS-Qaq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="kuR-xD-UlK"/>
                             <constraint firstItem="Doa-vY-Qka" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="reS-Sx-XvJ"/>
                             <constraint firstItem="ZX5-in-zJ4" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="vuM-H8-mNJ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GfH-cT-EjB" secondAttribute="bottom" constant="50" id="zEo-th-2Zt"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="JeO-Oh-po7">
+                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="sWV-AE-cuL">
+                            <connections>
+                                <action selector="showShareSheet:" destination="BYZ-38-t0r" id="TfB-Sx-n4W"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Cancel" id="4Yf-qO-XhQ">
+                            <connections>
+                                <action selector="doCancel:" destination="BYZ-38-t0r" id="A6g-h1-rcd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="bottomTextField" destination="GfH-cT-EjB" id="6nI-Jd-IRe"/>
+                        <outlet property="bottomToolbar" destination="ZX5-in-zJ4" id="SFt-de-KeY"/>
                         <outlet property="cameraButtonItem" destination="giq-NN-Ofc" id="w3V-qU-d8Z"/>
-                        <outlet property="cancelButtonItem" destination="X7S-U9-zbV" id="5bt-zK-7sm"/>
+                        <outlet property="cancelButtonItem" destination="4Yf-qO-XhQ" id="dgs-ig-7b8"/>
                         <outlet property="imageView" destination="Doa-vY-Qka" id="bPd-5a-HCY"/>
-                        <outlet property="shareButtonItem" destination="TXw-0G-x6F" id="2LV-CE-1oL"/>
+                        <outlet property="shareButtonItem" destination="sWV-AE-cuL" id="KaD-Lk-W6W"/>
                         <outlet property="topTextField" destination="dg6-Z2-PRm" id="MTn-UM-B9q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939.13043478260875" y="36.684782608695656"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="PIH-dp-Qcs">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gpb-Ec-Vpd" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fyH-f4-JlM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Wgr-dQ-REX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A8h-vk-2lR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="31.884057971014496" y="36.684782608695656"/>
         </scene>

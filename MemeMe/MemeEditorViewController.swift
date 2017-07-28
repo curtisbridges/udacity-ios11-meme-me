@@ -27,6 +27,8 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
 
+    @IBOutlet weak var bottomToolbar: UIToolbar!
+
     @IBOutlet weak var shareButtonItem: UIBarButtonItem!
     @IBOutlet weak var cancelButtonItem: UIBarButtonItem!
     @IBOutlet weak var imageView: UIImageView!
@@ -41,6 +43,7 @@ class MemeEditorViewController: UIViewController {
         topTextField.text = initialTopText
         bottomTextField.text = initialBottomText
 
+        navigationController?.delegate = self
         topTextField.delegate = self
         bottomTextField.delegate = self
     }
@@ -86,6 +89,26 @@ class MemeEditorViewController: UIViewController {
         shareButtonItem.isEnabled = isMemeDone()
     }
 
+    private func generateMemedImage() -> UIImage {
+        // Hide toolbar and navbar
+        hideInterfaceChrome(true)
+
+        // Render view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        // Show toolbar and navbar
+        hideInterfaceChrome(false)
+
+        return memedImage
+    }
+
+    private func hideInterfaceChrome(_ isHidden: Bool) {
+        navigationController?.isNavigationBarHidden = isHidden
+        bottomToolbar.isHidden = isHidden
+    }
 
     // MARK: - Actions
 
@@ -106,7 +129,12 @@ class MemeEditorViewController: UIViewController {
 
     // share this meme using the system share sheet
     @IBAction func showShareSheet(_ sender: UIBarButtonItem) {
-        print("show share sheet")
+        // capture the meme image from screen
+        let memedImage = generateMemedImage()
+
+        // share it using ActivityViewController
+        let activityViewController = UIActivityViewController.init(activityItems:[memedImage], applicationActivities: nil)
+        present(activityViewController, animated: true, completion: nil)
     }
 
     // reset the UI
@@ -206,5 +234,5 @@ extension MemeEditorViewController: UITextFieldDelegate {
 // MARK: Extension UINavigationControllerDelegate
 
 extension MemeEditorViewController: UINavigationControllerDelegate {
-    // TODO?
+    // TODO: In future versions, there will be more screens requiring a nav delegate
 }
