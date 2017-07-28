@@ -122,9 +122,13 @@ class MemeEditorViewController: UIViewController {
 
     // launch the camera app to take a new picture.
     @IBAction func launchCamera(_ sender: UIBarButtonItem) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        present(imagePicker, animated: true, completion: nil)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera;
+            imagePicker.allowsEditing = false
+            self.present(imagePicker, animated: true, completion: nil)
+        }
     }
 
     // show the album picker to choose an existing image
