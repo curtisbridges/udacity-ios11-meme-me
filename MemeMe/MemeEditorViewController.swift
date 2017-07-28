@@ -10,9 +10,11 @@ import UIKit
 
 class MemeEditorViewController: UIViewController {
 
-    private let initialTopText = "TOP"
-    private let initialBottomText = "BOTTOM"
+    // fileprivate so extensions can still access
+    fileprivate let initialTopText = "TOP"
+    fileprivate let initialBottomText = "BOTTOM"
 
+    // define attributable text attributes for top and bottom text fields
     private let memeTextAttributes:[String:Any] = [
         NSStrokeColorAttributeName: UIColor.black,
         NSForegroundColorAttributeName: UIColor.white,
@@ -36,19 +38,23 @@ class MemeEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        topTextField.text = initialTopText
+        bottomTextField.text = initialBottomText
+
+        topTextField.delegate = self
+        bottomTextField.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        // enable or disable the camera based upon
+        // enable or disable the camera based upon if it is available or not...
+        // (ipads didn't used to have a camera, user might not allow use of camera priv)
         cameraButtonItem.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
 
         // setup text fields
         topTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.text = initialTopText
         topTextField.textAlignment = .center
 
         bottomTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.text = initialBottomText
         bottomTextField.textAlignment = .center
 
         subscribeToKeyboardNotifications()
@@ -56,19 +62,28 @@ class MemeEditorViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         unsubscribeFromKeyboardNotifications()
     }
 
     private func isUserEditing() -> Bool {
+        // any user editable element has been changed
         return topTextField.text != initialTopText ||
                 bottomTextField.text != initialBottomText ||
                 imageView.image != nil
     }
 
+    private func isMemeDone() -> Bool {
+        // every user editable element has been changed
+        return topTextField.text != initialTopText &&
+            bottomTextField.text != initialBottomText &&
+            imageView.image != nil
+    }
+
     // fileprivate so extensions can still access
     fileprivate func handleInterfaceState() {
         cancelButtonItem.isEnabled = isUserEditing()
-        shareButtonItem.isEnabled = isUserEditing()
+        shareButtonItem.isEnabled = isMemeDone()
     }
 
 
@@ -96,10 +111,19 @@ class MemeEditorViewController: UIViewController {
 
     // reset the UI
     @IBAction func doCancel(_ sender: UIBarButtonItem) {
-        // TODO: need to dismiss keyboard here if it is visible
+        // reset text field to initial strings
         topTextField.text = initialTopText
         bottomTextField.text = initialBottomText
+
+        // dismiss keyboard here if it is visible
+        topTextField.resignFirstResponder()
+        bottomTextField.resignFirstResponder()
+
+        // reset imageview to initial state (no image)
         imageView.image = nil
+
+        // update ui elements to their proper state
+        handleInterfaceState()
     }
 }
 
@@ -109,18 +133,20 @@ class MemeEditorViewController: UIViewController {
 
 extension MemeEditorViewController {
     func keyboardWillShow(_ notification:Notification) {
-        // TODO: only do this when it is the bottom keyboard!
         view.frame.origin.y = 0 - getKeyboardHeight(notification)
     }
 
     func keyboardWillHide(_ notification:Notification) {
         view.frame.origin.y = 0
+
+        handleInterfaceState()
     }
 
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
         let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.cgRectValue.height
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        // only adjust view if the bottom textfield is being editted
+        return bottomTextField.isFirstResponder ? keyboardSize.cgRectValue.height : 0
     }
 
     func subscribeToKeyboardNotifications() {
@@ -142,11 +168,10 @@ extension MemeEditorViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
 
-        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = chosenImage
-
-        // TODO: set the constraints on the text fields to the location of the image???
+        if let chosenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            imageView.contentMode = .scaleAspectFit
+            imageView.image = chosenImage
+        }
 
         dismiss(animated:true, completion: nil)
 
@@ -158,6 +183,25 @@ extension MemeEditorViewController: UIImagePickerControllerDelegate {
     }
 }
 
+// MARK: Extension UITextFieldDelegate
+
+extension MemeEditorViewController: UITextFieldDelegate {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        // only clear the text fields if the user hasn't modified them
+        if textField == topTextField && topTextField.text == initialTopText {
+            return true
+        } else if textField == bottomTextField && bottomTextField.text == initialBottomText {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
 
 // MARK: Extension UINavigationControllerDelegate
 

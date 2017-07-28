@@ -57,7 +57,6 @@
 				87D3517A1F29341A0011A95E /* Support Files */,
 				87D3516A1F2933F10011A95E /* MemeEditorViewController.swift */,
 				87D3516C1F2933F10011A95E /* Main.storyboard */,
-				87D3516F1F2933F10011A95E /* Assets.xcassets */,
 			);
 			path = MemeMe;
 			sourceTree = "<group>";
@@ -68,6 +67,7 @@
 				87D351741F2933F10011A95E /* Info.plist */,
 				87D351681F2933F10011A95E /* AppDelegate.swift */,
 				87D351711F2933F10011A95E /* LaunchScreen.storyboard */,
+				87D3516F1F2933F10011A95E /* Assets.xcassets */,
 			);
 			name = "Support Files";
 			sourceTree = "<group>";
