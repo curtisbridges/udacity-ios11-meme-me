@@ -177,10 +177,8 @@ class MemeEditorViewController: UIViewController {
     // allow the user to pan the image
     @IBAction func handlePan(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: imageView)
-        if let view = imageView {
-            view.center = CGPoint(x:view.center.x + translation.x,
-                                  y:view.center.y + translation.y)
-        }
+        imageView.center = CGPoint(x:imageView.center.x + translation.x,
+                                   y:imageView.center.y + translation.y)
         sender.setTranslation(CGPoint(x:0,y:0), in: imageView)
     }
 }
@@ -223,6 +221,11 @@ extension MemeEditorViewController {
 extension MemeEditorViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
+
+        // reset imageview if it has been transformed or panned before loading new images
+        imageView.transform = CGAffineTransform.identity
+        imageView.center = CGPoint(x:imageView.intrinsicContentSize.width/2.0,
+                                   y:imageView.intrinsicContentSize.height/2.0 )
 
         if let chosenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageView.contentMode = .scaleAspectFit
