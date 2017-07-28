@@ -22,11 +22,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="200" translatesAutoresizingMaskIntoConstraints="NO" id="Doa-vY-Qka">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="200" translatesAutoresizingMaskIntoConstraints="NO" id="Doa-vY-Qka">
                                 <rect key="frame" x="0.0" y="268" width="414" height="200"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
                                 </accessibility>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="4Kc-ld-gyF" appends="YES" id="wsC-ir-SB4"/>
+                                </connections>
                             </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZX5-in-zJ4" userLabel="BottomToolbar">
                                 <rect key="frame" x="0.0" y="692" width="414" height="44"/>
@@ -81,22 +85,26 @@
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Doa-vY-Qka" secondAttribute="trailing" constant="-20" id="0Cw-Ck-PvQ"/>
                             <constraint firstItem="ZX5-in-zJ4" firstAttribute="top" secondItem="GfH-cT-EjB" secondAttribute="bottom" constant="20" id="4BI-qN-Hlt"/>
+                            <constraint firstItem="Doa-vY-Qka" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8aw-q5-u5R"/>
                             <constraint firstItem="ZX5-in-zJ4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="KHM-w0-Kmz"/>
                             <constraint firstItem="GfH-cT-EjB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Mud-NL-3cE"/>
                             <constraint firstItem="dg6-Z2-PRm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="Nlw-UC-DY1"/>
+                            <constraint firstAttribute="trailing" secondItem="Doa-vY-Qka" secondAttribute="trailing" id="QdN-iq-okQ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dg6-Z2-PRm" secondAttribute="trailing" constant="-16" id="RrE-0n-BQ6"/>
                             <constraint firstAttribute="trailing" secondItem="ZX5-in-zJ4" secondAttribute="trailing" id="T3h-bb-kQB"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ZX5-in-zJ4" secondAttribute="bottom" id="Uv2-Wn-uXM"/>
-                            <constraint firstItem="Doa-vY-Qka" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="VL7-8R-n2g"/>
-                            <constraint firstItem="Doa-vY-Qka" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="Yav-AO-Osd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GfH-cT-EjB" secondAttribute="trailing" constant="-16" id="Zd5-uD-Asn"/>
+                            <constraint firstItem="Doa-vY-Qka" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="aCL-50-4Ke"/>
+                            <constraint firstItem="Doa-vY-Qka" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ixY-de-fk9"/>
                             <constraint firstItem="dg6-Z2-PRm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="jSz-6T-Blg"/>
-                            <constraint firstItem="Doa-vY-Qka" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="reS-Sx-XvJ"/>
                             <constraint firstItem="ZX5-in-zJ4" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="vuM-H8-mNJ"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="T3f-jW-eOe" appends="YES" id="Yca-ek-jfb"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="JeO-Oh-po7">
                         <barButtonItem key="leftBarButtonItem" systemItem="action" id="sWV-AE-cuL">
@@ -122,6 +130,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <pinchGestureRecognizer id="T3f-jW-eOe">
+                    <connections>
+                        <action selector="handleZoom:" destination="BYZ-38-t0r" id="VSS-lF-PLs"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="4Kc-ld-gyF">
+                    <connections>
+                        <action selector="handlePan:" destination="BYZ-38-t0r" id="4cc-Du-P6q"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="939.13043478260875" y="36.684782608695656"/>
         </scene>
@@ -130,7 +148,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gpb-Ec-Vpd" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="fyH-f4-JlM">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fyH-f4-JlM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

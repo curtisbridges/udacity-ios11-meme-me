@@ -15,6 +15,9 @@ class MemeEditorViewController: UIViewController {
     fileprivate let initialTopText = "TOP"
     fileprivate let initialBottomText = "BOTTOM"
 
+    // an array to hold created memes
+    var savedMemes = [Meme]()
+
     // define attributable text attributes for top and bottom text fields
     private let memeTextAttributes:[String:Any] = [
         NSStrokeColorAttributeName: UIColor.black,
@@ -139,7 +142,8 @@ class MemeEditorViewController: UIViewController {
 
         // create our meme for saving
         if let top = topTextField.text, let bottom = bottomTextField.text {
-            _ = Meme(topText: top, bottomText: bottom, originalImage: imageView.image, memedImage: memedImage)
+            let meme = Meme(topText: top, bottomText: bottom, originalImage: imageView.image, memedImage: memedImage)
+            savedMemes.append(meme)
         }
 
         // share it using ActivityViewController
@@ -163,12 +167,27 @@ class MemeEditorViewController: UIViewController {
         // update ui elements to their proper state
         handleInterfaceState()
     }
+
+    // allow user to zoom the image (crop)
+    @IBAction func handleZoom(_ sender: UIPinchGestureRecognizer) {
+        imageView.transform = imageView.transform.scaledBy(x: sender.scale, y: sender.scale)
+        sender.scale = 1
+    }
+
+    // allow the user to pan the image
+    @IBAction func handlePan(_ sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: imageView)
+        if let view = imageView {
+            view.center = CGPoint(x:view.center.x + translation.x,
+                                  y:view.center.y + translation.y)
+        }
+        sender.setTranslation(CGPoint(x:0,y:0), in: imageView)
+    }
 }
 
 // MARK: - Extensions
 
 // MARK: Extension Keyboard
-
 extension MemeEditorViewController {
     func keyboardWillShow(_ notification:Notification) {
         view.frame.origin.y = 0 - getKeyboardHeight(notification)
@@ -201,7 +220,6 @@ extension MemeEditorViewController {
 }
 
 // MARK: Extension UIImagePickerControllerDelegate
-
 extension MemeEditorViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -222,7 +240,6 @@ extension MemeEditorViewController: UIImagePickerControllerDelegate {
 }
 
 // MARK: Extension UITextFieldDelegate
-
 extension MemeEditorViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         // only clear the text fields if the user hasn't modified them
@@ -242,7 +259,6 @@ extension MemeEditorViewController: UITextFieldDelegate {
 }
 
 // MARK: Extension UINavigationControllerDelegate
-
 extension MemeEditorViewController: UINavigationControllerDelegate {
     // TODO: In future versions, there will be more screens requiring a nav delegate
 }
