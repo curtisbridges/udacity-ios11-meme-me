@@ -23,7 +23,7 @@ class MemeEditorViewController: UIViewController {
         NSStrokeColorAttributeName: UIColor.black,
         NSForegroundColorAttributeName: UIColor.white,
         NSFontAttributeName: UIFont(name: "impact", size: 40)!,
-        NSStrokeWidthAttributeName: -1.0]
+        NSStrokeWidthAttributeName: -2.0]
 
 
     // MARK: - Outlets
@@ -194,7 +194,10 @@ class MemeEditorViewController: UIViewController {
 // MARK: Extension Keyboard
 extension MemeEditorViewController {
     func keyboardWillShow(_ notification:Notification) {
-        view.frame.origin.y = 0 - getKeyboardHeight(notification)
+        // only adjust view if the bottom textfield is being editted
+        if bottomTextField.isFirstResponder {
+            view.frame.origin.y = 0 - getKeyboardHeight(notification)
+        }
     }
 
     func keyboardWillHide(_ notification:Notification) {
@@ -206,8 +209,7 @@ extension MemeEditorViewController {
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
-        // only adjust view if the bottom textfield is being editted
-        return bottomTextField.isFirstResponder ? keyboardSize.cgRectValue.height : 0
+        return keyboardSize.cgRectValue.height
     }
 
     func subscribeToKeyboardNotifications() {
