@@ -59,11 +59,8 @@ class MemeEditorViewController: UIViewController {
         cameraButtonItem.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
 
         // setup text fields
-        topTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.textAlignment = .center
-
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.textAlignment = .center
+        configure(textField: topTextField, withAttributes: memeTextAttributes)
+        configure(textField: bottomTextField, withAttributes: memeTextAttributes)
 
         subscribeToKeyboardNotifications()
         handleInterfaceState()
@@ -73,6 +70,11 @@ class MemeEditorViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         unsubscribeFromKeyboardNotifications()
+    }
+
+    private func configure(textField: UITextField, withAttributes: [String:Any]) {
+        textField.defaultTextAttributes = withAttributes
+        textField.textAlignment = .center
     }
 
     private func isUserEditing() -> Bool {
