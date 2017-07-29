@@ -124,20 +124,23 @@ class MemeEditorViewController: UIViewController {
 
     // launch the camera app to take a new picture.
     @IBAction func launchCamera(_ sender: UIBarButtonItem) {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.camera;
-            imagePicker.allowsEditing = false
-            self.present(imagePicker, animated: true, completion: nil)
-        }
+        showImagePicker(withSourceType: .camera)
     }
 
     // show the album picker to choose an existing image
     @IBAction func showAlbumPicker(_ sender: UIBarButtonItem) {
+        showImagePicker(withSourceType: .photoLibrary)
+    }
+
+    private func showImagePicker(withSourceType: UIImagePickerControllerSourceType) {
+        // protect from attempting to show camera picker if the camera isn't available
+        if withSourceType == .camera && !UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            return
+        }
+
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
-        pickerController.sourceType = .photoLibrary
+        pickerController.sourceType = withSourceType
         present(pickerController, animated: true, completion: nil)
     }
 
@@ -146,15 +149,15 @@ class MemeEditorViewController: UIViewController {
         // capture the meme image from screen
         let memedImage = generateMemedImage()
 
-        // create our meme for saving
-        if let top = topTextField.text, let bottom = bottomTextField.text {
-            let meme = Meme(topText: top, bottomText: bottom, originalImage: imageView.image, memedImage: memedImage)
-            savedMemes.append(meme)
-        }
-
         // share it using ActivityViewController
         let activityViewController = UIActivityViewController.init(activityItems:[memedImage], applicationActivities: nil)
-        present(activityViewController, animated: true, completion: nil)
+        present(activityViewController, animated: true, completion: {() -> Void in
+            // create our meme for saving
+            if let top = self.topTextField.text, let bottom = self.bottomTextField.text {
+                let meme = Meme(topText: top, bottomText: bottom, originalImage: self.imageView.image, memedImage: memedImage)
+                self.savedMemes.append(meme)
+            }
+        })
     }
 
     // reset the UI
