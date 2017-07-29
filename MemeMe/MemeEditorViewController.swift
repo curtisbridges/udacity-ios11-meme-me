@@ -23,7 +23,7 @@ class MemeEditorViewController: UIViewController {
         NSStrokeColorAttributeName: UIColor.black,
         NSForegroundColorAttributeName: UIColor.white,
         NSFontAttributeName: UIFont(name: "impact", size: 40)!,
-        NSStrokeWidthAttributeName: -1.0]
+        NSStrokeWidthAttributeName: -2.0]
 
 
     // MARK: - Outlets
@@ -59,11 +59,8 @@ class MemeEditorViewController: UIViewController {
         cameraButtonItem.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
 
         // setup text fields
-        topTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.textAlignment = .center
-
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.textAlignment = .center
+        configure(textField: topTextField, withAttributes: memeTextAttributes)
+        configure(textField: bottomTextField, withAttributes: memeTextAttributes)
 
         subscribeToKeyboardNotifications()
         handleInterfaceState()
@@ -73,6 +70,11 @@ class MemeEditorViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         unsubscribeFromKeyboardNotifications()
+    }
+
+    private func configure(textField: UITextField, withAttributes: [String:Any]) {
+        textField.defaultTextAttributes = withAttributes
+        textField.textAlignment = .center
     }
 
     private func isUserEditing() -> Bool {
@@ -122,20 +124,23 @@ class MemeEditorViewController: UIViewController {
 
     // launch the camera app to take a new picture.
     @IBAction func launchCamera(_ sender: UIBarButtonItem) {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.camera;
-            imagePicker.allowsEditing = false
-            self.present(imagePicker, animated: true, completion: nil)
-        }
+        showImagePicker(withSourceType: .camera)
     }
 
     // show the album picker to choose an existing image
     @IBAction func showAlbumPicker(_ sender: UIBarButtonItem) {
+        showImagePicker(withSourceType: .photoLibrary)
+    }
+
+    private func showImagePicker(withSourceType: UIImagePickerControllerSourceType) {
+        // protect from attempting to show camera picker if the camera isn't available
+        if withSourceType == .camera && !UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            return
+        }
+
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
-        pickerController.sourceType = .photoLibrary
+        pickerController.sourceType = withSourceType
         present(pickerController, animated: true, completion: nil)
     }
 
@@ -144,15 +149,15 @@ class MemeEditorViewController: UIViewController {
         // capture the meme image from screen
         let memedImage = generateMemedImage()
 
-        // create our meme for saving
-        if let top = topTextField.text, let bottom = bottomTextField.text {
-            let meme = Meme(topText: top, bottomText: bottom, originalImage: imageView.image, memedImage: memedImage)
-            savedMemes.append(meme)
-        }
-
         // share it using ActivityViewController
         let activityViewController = UIActivityViewController.init(activityItems:[memedImage], applicationActivities: nil)
-        present(activityViewController, animated: true, completion: nil)
+        present(activityViewController, animated: true, completion: {() -> Void in
+            // create our meme for saving
+            if let top = self.topTextField.text, let bottom = self.bottomTextField.text {
+                let meme = Meme(topText: top, bottomText: bottom, originalImage: self.imageView.image, memedImage: memedImage)
+                self.savedMemes.append(meme)
+            }
+        })
     }
 
     // reset the UI
@@ -192,7 +197,10 @@ class MemeEditorViewController: UIViewController {
 // MARK: Extension Keyboard
 extension MemeEditorViewController {
     func keyboardWillShow(_ notification:Notification) {
-        view.frame.origin.y = 0 - getKeyboardHeight(notification)
+        // only adjust view if the bottom textfield is being editted
+        if bottomTextField.isFirstResponder {
+            view.frame.origin.y = 0 - getKeyboardHeight(notification)
+        }
     }
 
     func keyboardWillHide(_ notification:Notification) {
@@ -204,8 +212,7 @@ extension MemeEditorViewController {
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
-        // only adjust view if the bottom textfield is being editted
-        return bottomTextField.isFirstResponder ? keyboardSize.cgRectValue.height : 0
+        return keyboardSize.cgRectValue.height
     }
 
     func subscribeToKeyboardNotifications() {
